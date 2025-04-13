@@ -1,41 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, Button } from 'react-native';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { Note, useNotes } from '../../context/NotesContext';
-import { useSQLiteContext } from 'expo-sqlite';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
+import { useSQLiteContext } from 'expo-sqlite'
+import { useEffect, useState } from 'react'
+import { Button, StyleSheet, TextInput, View } from 'react-native'
+import { type Note, useNotes } from '../../context/NotesContext'
 
 export default function NoteScreen() {
-  const { id } = useLocalSearchParams();
-  const db = useSQLiteContext();
-  const router = useRouter();
-  const { notes, updateNote } = useNotes();
-  const [note, setNote] = useState({ title: '', content: '' });
+  const { id } = useLocalSearchParams()
+  const db = useSQLiteContext()
+  const router = useRouter()
+  const { notes, updateNote } = useNotes()
+  const [note, setNote] = useState({ title: '', content: '' })
 
   useEffect(() => {
     const fetchNote = async () => {
       const currentNote = await db.getFirstAsync<Note>(
         'SELECT * FROM notes WHERE id = ?',
-        [id as string]
-      );
+        [id as string],
+      )
       if (currentNote) {
         setNote({
           title: currentNote.title || '',
           content: currentNote.content || '',
-        });
+        })
       }
-    };
-    fetchNote();
-  }, [id, notes]);
+    }
+    fetchNote()
+  }, [id, notes])
 
   const handleTitleChange = (title: string) => {
-    setNote((prev) => ({ ...prev, title }));
-    updateNote(id as string, { title });
-  };
+    setNote((prev) => ({ ...prev, title }))
+    updateNote(id as string, { title })
+  }
 
   const handleContentChange = (content: string) => {
-    setNote((prev) => ({ ...prev, content }));
-    updateNote(id as string, { content });
-  };
+    setNote((prev) => ({ ...prev, content }))
+    updateNote(id as string, { content })
+  }
 
   return (
     <>
@@ -46,7 +46,7 @@ export default function NoteScreen() {
             <Button
               title="Push"
               onPress={() => {
-                db.syncLibSQL();
+                db.syncLibSQL()
               }}
             />
           ),
@@ -67,14 +67,14 @@ export default function NoteScreen() {
             onChangeText={handleContentChange}
             placeholder="Note"
             placeholderTextColor="#8E8E93"
-            multiline
+            multiline={true}
             textAlignVertical="top"
-            autoFocus
+            autoFocus={true}
           />
         </View>
       </View>
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 22,
   },
-});
+})

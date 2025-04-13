@@ -1,42 +1,39 @@
-import React from 'react';
+import { Stack, useRouter } from 'expo-router'
+import { Plus, Search, X } from 'lucide-react-native'
+import { useState } from 'react'
 import {
-  View,
-  StyleSheet,
-  TextInput,
+  Button,
   FlatList,
   Pressable,
-  Switch,
-  Text,
-  Button,
-} from 'react-native';
-import { useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import { Plus, Search, X } from 'lucide-react-native';
-import { SwipeableNote } from '../components/SwipeableNote';
-import { useNotes } from '../context/NotesContext';
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native'
+import Animated, { FadeIn } from 'react-native-reanimated'
+import { SwipeableNote } from '../components/SwipeableNote'
+import { useNotes } from '../context/NotesContext'
 
 export default function NotesScreen() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('')
+  const router = useRouter()
   const { notes, createNote, deleteNote, isSyncing, toggleSync, syncNotes } =
-    useNotes();
+    useNotes()
 
   const filteredNotes = notes.filter(
     (note) =>
       note.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      note.content?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      note.content?.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
 
   const handleCreateNote = async () => {
-    console.log('Creating note...');
-    const newNote = await createNote();
+    console.log('Creating note...')
+    const newNote = await createNote()
     if (newNote) {
-      router.push(`/note/${newNote.id}`);
+      router.push(`/note/${newNote.id}`)
     } else {
-      alert('Failed to create note');
+      alert('Failed to create note')
     }
-  };
+  }
 
   const renderNote = ({ item }: any) => (
     <SwipeableNote
@@ -44,7 +41,7 @@ export default function NotesScreen() {
       onPress={() => router.push(`/note/${item.id}`)}
       onDelete={() => deleteNote(item.id)}
     />
-  );
+  )
   return (
     <>
       <Stack.Screen
@@ -101,7 +98,7 @@ export default function NotesScreen() {
         </Pressable>
       </Animated.View>
     </>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -156,4 +153,4 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-});
+})

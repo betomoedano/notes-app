@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.betoatexpo.notesapp"
+      "bundleIdentifier": "com.betoatexpo.notesapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +34,14 @@
     },
     "android": {
       "package": "com.betoatexpo.notesapp"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b0eef7e1-7775-43ca-8216-2c7860b57bb8"
+      }
     }
   }
 }

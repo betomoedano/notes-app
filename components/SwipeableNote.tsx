@@ -1,57 +1,55 @@
-import React from 'react';
-import { Pressable, StyleSheet, Text, View, LogBox } from 'react-native';
-import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
+import { format } from 'date-fns'
+import { Trash2 } from 'lucide-react-native'
+import { LogBox, Pressable, StyleSheet, Text, View } from 'react-native'
+import ReanimatedSwipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
 import Reanimated, {
-  SharedValue,
+  type SharedValue,
   useAnimatedStyle,
   FadeIn,
   FadeOut,
-  Layout,
   LinearTransition,
   configureReanimatedLogger,
-} from 'react-native-reanimated';
-import { format } from 'date-fns';
-import { Trash2 } from 'lucide-react-native';
+} from 'react-native-reanimated'
 
-LogBox.ignoreAllLogs(); // YOLO
-configureReanimatedLogger({ strict: false }); // YOLO
+LogBox.ignoreAllLogs() // YOLO
+configureReanimatedLogger({ strict: false }) // YOLO
 
 interface Note {
-  id: string;
-  title: string;
-  content: string;
-  modifiedDate: Date;
+  id: string
+  title: string
+  content: string
+  modifiedDate: Date
 }
 
 interface Props {
-  note: Note;
-  onPress: () => void;
-  onDelete: () => void;
+  note: Note
+  onPress: () => void
+  onDelete: () => void
 }
 
 export function SwipeableNote({ note, onPress, onDelete }: Props) {
   const RightAction = (
     prog: SharedValue<number>,
-    drag: SharedValue<number>
+    drag: SharedValue<number>,
   ) => {
     const styleAnimation = useAnimatedStyle(() => {
       return {
         transform: [{ translateX: drag.value + 60 }],
-      };
-    });
+      }
+    })
 
     return (
       <Pressable
         onPress={() => {
-          onDelete();
+          onDelete()
         }}
       >
         <Reanimated.View style={[styleAnimation, styles.rightAction]}>
           <Trash2 size={24} color="red" />
         </Reanimated.View>
       </Pressable>
-    );
-  };
+    )
+  }
 
   return (
     <Reanimated.View
@@ -62,11 +60,11 @@ export function SwipeableNote({ note, onPress, onDelete }: Props) {
       <ReanimatedSwipeable
         key={note.id}
         friction={2}
-        enableTrackpadTwoFingerGesture
+        enableTrackpadTwoFingerGesture={true}
         rightThreshold={40}
         renderRightActions={RightAction}
         overshootRight={false}
-        enableContextMenu
+        enableContextMenu={true}
         containerStyle={{
           paddingBottom: 12,
           paddingHorizontal: 16,
@@ -74,7 +72,7 @@ export function SwipeableNote({ note, onPress, onDelete }: Props) {
       >
         <Pressable
           onPress={() => {
-            onPress();
+            onPress()
           }}
           style={styles.swipeable}
         >
@@ -92,7 +90,7 @@ export function SwipeableNote({ note, onPress, onDelete }: Props) {
         </Pressable>
       </ReanimatedSwipeable>
     </Reanimated.View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -135,4 +133,4 @@ const styles = StyleSheet.create({
     color: '#3C3C43',
     opacity: 0.6,
   },
-});
+})
